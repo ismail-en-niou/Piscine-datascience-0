@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:18
+    container_name: postgres-dev
+    environment:
+      - POSTGRES_DB_FILE=/run/secrets/POSTGRES_DB
+      - POSTGRES_USER_FILE=/run/secrets/POSTGRES_USER
+      - POSTGRES_PASSWORD_FILE=/run/secrets/POSTGRES_PASSWORD
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    secrets:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    restart: unless-stopped
+
+
+volumes:
+  postgres_data:
+
+secrets:
+  POSTGRES_DB:
+    file: ./secrets/POSTGRES_DB.txt
+  POSTGRES_USER:
+    file: ./secrets/POSTGRES_USER.txt
+  POSTGRES_PASSWORD:
+    file: ./secrets/POSTGRES_PASSWORD.txt
